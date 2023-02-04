@@ -1,6 +1,7 @@
 //const express = require('express')
 import express, { response } from 'express'
-
+const express = require ('express')
+const usersRouter = require ('./routes/user.router')
 
 const app = express()
 const PORT = 8080
@@ -16,6 +17,8 @@ const arrayUsuarios = [
     {id:'3', nombre:'nombre 3', apellido:'apellido 3'},
     {id:'4', nombre:'nombre 4', apellido:'apellido 4'},
 ]
+
+app.use('/api/usuarios', usersRouter)
 
 app.get('/', (request, response) => {
     response.send(arrayUsuarios)
@@ -66,33 +69,8 @@ app.get('/query', ( req, res ) =>{
 
 })
 
-app.post('/api/usuarios/: userId', (request, response) =>{
-    const { userId } = request.params
-    const index = arrayUsuarios.findIndex(user => user.id === userId)
-    if (index === -1) {
-        return response.status(400).send( {mesagge: 'No se encuentra el usuario'} )
-    }
-    
-    let user = request.body
-    if (!user.nombre || !user.apellido){
-        return response.status(400).send({message:'pasar todos los datos'})
-    }
-    
-    arrayUsuarios[index] = user
-    console.log(arrayUsuarios)
-    
-    response.status(201).send({
-        users: arrayUsuarios,
-        message:'usuario Modificado'
-    })
 
-    app.delete('/api/usuarios/:userId' , (request, response) =>{
-        let arrayUsuarios = arrayUsuarios.lenght
-        let users = arrayUsuarios.filter (user => user.id ===!userId)
-        console.log(users.lenght)
-        if (users.lenght === arrayTamanno) {
-            res.status(404).send({ message: "Usuario no encontrado"})
-        }
-        res.status(200).send({ message: "Usuario borrado", users})    
-    })
+app.listen(PORT, err =>{
+    if (err) console.log(err)
+    console.log(`Escuchando el puerto ${PORT}`)
 })
