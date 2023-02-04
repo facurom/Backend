@@ -41,7 +41,7 @@ router.put('/api/usuarios/: userId', (request, response) =>{
     
     response.status(201).send({
         users: arrayUsuarios,
-        message:'usuario Modificado'
+        message:'usuario Modificad'
     })
 
     
