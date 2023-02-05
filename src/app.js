@@ -1,5 +1,6 @@
 //const express = require('express')
 import express, { response } from 'express'
+const cookieParser = require('cookie-parser')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const productsRouter = require ('./routes/productos.router')
@@ -11,12 +12,23 @@ app.use(express.json())
 
 
 app.use(express.urlencoded({extended: true}))
+app.use('/virtual' , express.static(__dirname + '/public'))
+app.use(cookieParser())
+
+function mid1(req, res, next) {
+    req.dato1=' dato uno'
+    next()
+}
+function mid2(req, res, next) {
+    req.dato2=' dato dos'
+    next()
+}
 
 
 
-app.use('/api/usuarios', usersRouter)
+app.use('/api/usuarios', mid1 , usersRouter)
 
-app.use('/api/productos', productsRouter)
+app.use('/api/productos', mid2 , productsRouter)
 
 
 app.get('/', (request, response) => {
