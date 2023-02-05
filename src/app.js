@@ -2,6 +2,7 @@
 import express, { response } from 'express'
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
+const productsRouter = require ('./routes/productos.router')
 
 const app = express()
 const PORT = 8080
@@ -11,14 +12,12 @@ app.use(express.json())
 
 app.use(express.urlencoded({extended: true}))
 
-const arrayUsuarios = [
-    {id:'1', nombre:'nombre 1', apellido:'apellido 1'},
-    {id:'2', nombre:'nombre 2', apellido:'apellido 2'},
-    {id:'3', nombre:'nombre 3', apellido:'apellido 3'},
-    {id:'4', nombre:'nombre 4', apellido:'apellido 4'},
-]
+
 
 app.use('/api/usuarios', usersRouter)
+
+app.use('/api/productos', productsRouter)
+
 
 app.get('/', (request, response) => {
     response.send(arrayUsuarios)
