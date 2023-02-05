@@ -1,5 +1,6 @@
 //const express = require('express')
 import express, { response } from 'express'
+import { uploader, uploeader } from './utils'
 const cookieParser = require('cookie-parser')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
@@ -29,6 +30,12 @@ function mid2(req, res, next) {
 app.use('/api/usuarios', mid1 , usersRouter)
 
 app.use('/api/productos', mid2 , productsRouter)
+
+app.post('single', uploader.single('myfile'),(req,res)=>{
+    res.status(200).json({
+        mensaje: 'se a subido el archivo'
+    })
+})
 
 
 app.get('/', (request, response) => {
