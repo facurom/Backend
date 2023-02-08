@@ -5,16 +5,25 @@ const cookieParser = require('cookie-parser')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const productsRouter = require ('./routes/productos.router')
+const {uploader} = require('./utils')
+
+const handlebars = require('express-handlebars')
 
 const app = express()
 const PORT = 8080
 
 app.use(express.json())
-
-
 app.use(express.urlencoded({extended: true}))
 app.use('/virtual' , express.static(__dirname + '/public'))
 app.use(cookieParser())
+
+app.engine('handlebars', handlebars.engine())
+app.set('views', __dirname+'/views')
+app.set('views engine', 'handlebars')
+
+app.get('/', (req, res)=>{
+    res.send(',,')
+})
 
 function mid1(req, res, next) {
     req.dato1=' dato uno'
