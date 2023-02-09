@@ -1,4 +1,15 @@
 <div>
-    <h1>¡Hola, {{ name }}!, ¡Que gusto verte!</h1>
+    <h1>¡Hola, {{ user.name }}!, ¡Que gusto verte!</h1>
+    {{#if isAdmin }}
+    {{#each fakeApi}}
+    <div>
+        <p>Nombre del producto {{this.name}}</p>
+        <p>Precio: {{this.price}}</p>
+    </div>
+    {{/each}}
+    {{else}}
+    <h2>Usted no tiene los permisos necesarios para ver los productos</h2>
+    {{/if }}
 
 </div>
+<script src="/virtual/js/index.js"></script>

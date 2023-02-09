@@ -4,7 +4,7 @@ import { uploader, uploeader } from './utils'
 const cookieParser = require('cookie-parser')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
-const productsRouter = require ('./routes/productos.router')
+const viewsRouter = require ('./routes/views.router')
 const {uploader} = require('./utils')
 
 const handlebars = require('express-handlebars')
@@ -16,14 +16,14 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use('/virtual' , express.static(__dirname + '/public'))
 app.use(cookieParser())
-
+//----------------------------------------
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname+'/views')
-app.set('views engine', 'handlebars')
+app.set('view engine', 'handlebars')
 
-app.get('/', (req, res)=>{
-    res.send(',,')
-})
+
+
+app.use('/', viewsRouter)
 
 function mid1(req, res, next) {
     req.dato1=' dato uno'
