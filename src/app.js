@@ -6,6 +6,7 @@ const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
 const {uploader} = require('./utils')
+const {Server} = require ('socket.io')
 
 const handlebars = require('express-handlebars')
 
@@ -97,7 +98,13 @@ app.get('/query', ( req, res ) =>{
 })
 
 
-app.listen(PORT, err =>{
+const httpServer = app.listen(PORT, err =>{
     if (err) console.log(err)
-    console.log(`Escuchando el puerto ${PORT}`)
+    console.log(`Escuchando el puerto ${httpServer.address().port}`)
 })
+
+const io = new Server(httpServer)
+
+// httpServer.on('error', err =>{
+//     console.log(err)
+// })
