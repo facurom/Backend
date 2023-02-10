@@ -6,7 +6,7 @@ const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
 const {uploader} = require('./utils')
-const {Server} = require ('socket.io')
+const {Server, Socket} = require ('socket.io')
 
 const handlebars = require('express-handlebars')
 
@@ -103,7 +103,20 @@ const httpServer = app.listen(PORT, err =>{
     console.log(`Escuchando el puerto ${httpServer.address().port}`)
 })
 
-const io = new Server(httpServer)
+const socketServer = new Server(httpServer)
+
+socketServer.on('connection', socket =>{
+    console.log('Nuevo cliente conectado')
+
+    socket.on('mensaje', data =>{
+        console.log(data)
+        
+    })
+
+    socket.on('disconnect', () =>{
+        console.log('Disconnect')
+    })
+})
 
 // httpServer.on('error', err =>{
 //     console.log(err)

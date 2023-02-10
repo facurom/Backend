@@ -1,5 +1,6 @@
 <div>
     <h1>¡Hola, {{ user.name }}!, ¡Que gusto verte!</h1>
+    <h2>Socket Io</h2>
     {{#if isAdmin }}
     {{#each fakeApi}}
     <div>
@@ -12,4 +13,5 @@
     {{/if }}
 
 </div>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/virtual/js/index.js"></script>
