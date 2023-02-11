@@ -112,7 +112,12 @@ socketServer.on('connection', socket =>{
         console.log(data)
         
     })
-
+    
+    socket.emit('mensajeServer','El servidor te escucha')
+    socket.broadcast.emit('evento_para_todos_menos_el_actual', 'Esto lo van a recibir todos los que esten conectados a la plataforma')
+    socketServer.emit('evento_para_todos', 'Este mensaje es de manera global')
+    
+    
     socket.on('disconnect', () =>{
         console.log('Disconnect')
     })
