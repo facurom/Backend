@@ -6,7 +6,7 @@ const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
 const {uploader} = require('./utils')
-const {Server, Socket} = require ('socket.io')
+const { Server } = require ('socket.io')
 
 const handlebars = require('express-handlebars')
 
@@ -103,13 +103,19 @@ const httpServer = app.listen(PORT, err =>{
     console.log(`Escuchando el puerto ${httpServer.address().port}`)
 })
 
-const socketServer = new Server(httpServer)
+const io= new Server(httpServer)
 
-socketServer.on('connection', socket =>{
+const mensaje = [
+   // {user:'Sofi', message:'Hola, como estan'}
+]
+
+io.on('connection', socket =>{
     console.log('Nuevo cliente conectado')
 
     socket.on('mensaje', data =>{
         console.log(data)
+        mensaje.push(data)
+        io.emit('messageLog', mensaje)
         
     })
     
@@ -117,6 +123,9 @@ socketServer.on('connection', socket =>{
     socket.broadcast.emit('evento_para_todos_menos_el_actual', 'Esto lo van a recibir todos los que esten conectados a la plataforma')
     socketServer.emit('evento_para_todos', 'Este mensaje es de manera global')
     
+    socket.on('authenticated', data =>{
+        socket.broadcast.emit('newUserConnected', data )
+    })
     
     socket.on('disconnect', () =>{
         console.log('Disconnect')
