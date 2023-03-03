@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const userCollection = 'usuarios'
+const userCollection = 'Usuarios'
 const UserSchema = Schema({
     nombre: {
         type: String,
@@ -12,7 +12,7 @@ const UserSchema = Schema({
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true
 
     },

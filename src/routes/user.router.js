@@ -1,24 +1,34 @@
 const express = require('express')
-import { Router } from 'express'
+import { Router} from 'express'
+import UserModel from '../models/user.model'
 
-const {Router} = express
+const {Router, response} = require ('express')
 
+const UserModel= requiere('../models/user.model.js')
 const router =  Router()
-
-const arrayUsuarios = [
-    {id:'1', nombre:'nombre 1', apellido:'apellido 1'},
-    {id:'2', nombre:'nombre 2', apellido:'apellido 2'},
-    {id:'3', nombre:'nombre 3', apellido:'apellido 3'},
-    {id:'4', nombre:'nombre 4', apellido:'apellido 4'},
-]
 
 router.get('/', )
 
-router.get('/', (request, response) => {
-    response.status(200).send('users')
+router.get('/', async (request, res) => {
+    try {
+        let users = await UserModel.find({})
+        if (!users) {
+            
+        }
+        res.status(200).send({
+            msg: 'succes',
+            users
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    
 })
 
-
+router.get('/:id', (request, response = res ) =>{
+    const {id} = request.params
+    response.status(200).send(id)
+})
 router.post('/api/usuarios', (request, response) =>{
     let user = request.body
     if (user.name || !user.apellido) {
@@ -32,25 +42,29 @@ router.post('/api/usuarios', (request, response) =>{
         message: 'usuario creado'
     })
 })
-router.put('/api/usuarios/: userId', (request, response) =>{
+router.put('/api/usuarios/: userId', (req, res = response) =>{
     const { userId } = request.params
     const index = arrayUsuarios.findIndex(user => user.id === userId)
-    if (index === -1) {
-        return response.status(400).send( {mesagge: 'No se encuentra el usuario'} )
+    
+    try {
+        let (nombre, apellido, email) = request.body
+        if (!.nombre || !.apellido || !.email){
+            return res.status(400).send({message:'pasar todos los datos'})
+        }
+        
+        let result = await UserModel.create({
+            nombre,
+            apellido,
+            email
+        })
+        res.status(201).send({
+            status: 'success',
+            result
+        }) 
+    } catch (error) {
+        console.log(error)
     }
     
-    let user = request.body
-    if (!user.nombre || !user.apellido){
-        return response.status(400).send({message:'pasar todos los datos'})
-    }
-    
-    arrayUsuarios[index] = user
-    console.log(arrayUsuarios)
-    
-    response.status(201).send({
-        users: arrayUsuarios,
-        message:'usuario Modificado'
-    })
 
     
 })

@@ -7,9 +7,12 @@ const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
 const {uploader} = require('./utils')
 const { Server } = require ('socket.io')
-
+const {dbConnection} = require('./config/conectionDB')
 const handlebars = require('express-handlebars')
 
+
+
+dbConnection()
 const app = express()
 const PORT = 8080
 
