@@ -48,7 +48,7 @@ router.put('/api/usuarios/: userId', (req, res = response) =>{
     
     try {
         let (nombre, apellido, email) = request.body
-        if (!.nombre || !.apellido || !.email){
+        if (!nombre || !apellido || !email){
             return res.status(400).send({message:'pasar todos los datos'})
         }
         

@@ -2,11 +2,12 @@ const { Schema, model } = require('mongoose')
 
 const userCollection = 'Usuarios'
 const UserSchema = Schema({
-    nombre: {
+    first_name: {
         type: String,
+        index: true,
         require: true 
     },
-    apellido: {
+    last_name: {
         type: String,
         require: true
     },
@@ -16,6 +17,9 @@ const UserSchema = Schema({
       unique: true
 
     },
+    gender: String
 })
 
-module.exports = model(userCollection, UserSchema)
+let UserModel = model(userCollection, UserSchema)
+
+module.exports = {UserModel}
