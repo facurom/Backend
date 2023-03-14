@@ -1,6 +1,6 @@
 const express = require('express')
 import { Router} from 'express'
-import UserModel from '../models/user.model'
+import {UserModel} from '../models/user.model'
 
 const {Router, response} = require ('express')
 
@@ -11,14 +11,18 @@ router.get('/', )
 
 router.get('/', async (request, res) => {
     try {
-        let users = await UserModel.find({})
-        if (!users) {
-            
+        const {page= 1} = req.query
+        const {docs, hasPrevPage, hasNextPage, prevPage, nextPage} = await UserModel.paginate({}, {limit:10, page, lean: true })
+        //const users= docs
+        res.status(200).send('users',{
+           users: docs, 
+           hasPrevPage, 
+           hasNextPage, 
+           prevPage, 
+           nextPage,
+           page
         }
-        res.status(200).send({
-            msg: 'succes',
-            users
-        })
+            )
     } catch (error) {
         console.log(error)
     }
