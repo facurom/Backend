@@ -2,9 +2,11 @@
 import express, { response } from 'express'
 import { uploader, uploeader } from './utils'
 const cookieParser = require('cookie-parser')
+const session = require('express-session')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
+const cookieRouter = require ('./routes/cookie.router')
 const {uploader} = require('./utils')
 const { Server } = require ('socket.io')
 const {dbConnection} = require('./config/conectionDB')
@@ -19,12 +21,20 @@ const PORT = 8080
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use('/virtual' , express.static(__dirname + '/public'))
-app.use(cookieParser())
+app.use(cookieParser('p@l@bras3creta'))
+app.use(session({
+    secret: 'secretCoder',
+    resave: true,
+    saveUninitialized: true
+}))
+
 //----------------------------------------
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
 
+
+app.use('/cookie',cookieRouter)
 
 
 app.use('/', viewsRouter)
