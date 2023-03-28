@@ -1,5 +1,6 @@
 //const express = require('express')
 import express, { response } from 'express'
+import { auth } from './middleware/auth'
 import { uploader, uploeader } from './utils'
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -11,7 +12,7 @@ const {uploader} = require('./utils')
 const { Server } = require ('socket.io')
 const {dbConnection} = require('./config/conectionDB')
 const handlebars = require('express-handlebars')
-
+const FileStore = require('session-file-store')
 
 
 dbConnection()
@@ -20,6 +21,8 @@ const PORT = 8080
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+const fileStore = FileStore(session)
 app.use('/virtual' , express.static(__dirname + '/public'))
 app.use(cookieParser('p@l@bras3creta'))
 app.use(session({
@@ -50,9 +53,9 @@ function mid2(req, res, next) {
 
 
 
-app.use('/api/usuarios', mid1 , usersRouter)
+app.use('/api/usuarios', auth , usersRouter)
 
-app.use('/api/productos', mid2 , productsRouter)
+app.use('/api/productos', productsRouter)
 
 app.post('single', uploader.single('myfile'),(req,res)=>{
     res.status(200).json({
