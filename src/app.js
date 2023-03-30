@@ -4,6 +4,8 @@ import { auth } from './middleware/auth'
 import { uploader, uploeader } from './utils'
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const FileStore = require('session-file-store')
+const MongoStore = require('connect-mongo')
 const express = require ('express')
 const usersRouter = require ('./routes/user.router')
 const viewsRouter = require ('./routes/views.router')
@@ -12,7 +14,9 @@ const {uploader} = require('./utils')
 const { Server } = require ('socket.io')
 const {dbConnection} = require('./config/conectionDB')
 const handlebars = require('express-handlebars')
-const FileStore = require('session-file-store')
+const authRouter = require('./routes/auth.router')
+const productsRouter = require('./routes/productos.router')
+
 
 
 dbConnection()
@@ -25,10 +29,33 @@ app.use(express.urlencoded({extended: true}))
 const fileStore = FileStore(session)
 app.use('/virtual' , express.static(__dirname + '/public'))
 app.use(cookieParser('p@l@bras3creta'))
+
+// app.use(session({
+//     store: new fileStore({
+//         path: __dirname+'/sessions',
+//         ttl: 100,
+//         retries: 0,
+//     }),
+
+
+//     secret: 'secretCoder',
+//     resave: true,
+//     saveUninitialized: false,
+// }))
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl:'mongodb://localhost:27017/backenddb',
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        },
+        ttl:15 
+        
+    }),
+    
     secret: 'secretCoder',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false,
 }))
 
 //----------------------------------------
@@ -52,6 +79,7 @@ function mid2(req, res, next) {
 }
 
 
+app.use('/', authRouter)
 
 app.use('/api/usuarios', auth , usersRouter)
 

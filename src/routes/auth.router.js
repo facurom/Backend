@@ -2,10 +2,12 @@ const {Router} = require ('express')
 
 const router = Router()
 
-// router.get('/login', ( req, res ) =>{
-//     res.render('login')
+const products = [
+    {title: 'Crema Hidratante', price: '4500', imageUrl: ''},
+    {title: 'Crema contorno de ojos', price: '7500', imageUrl: ''},
+    {title: 'Jabon en crema', price: '750', imageUrl: ''},
 
-// })
+]
 
 router.post('/login', ( req, res ) =>{
     const data = req.body
@@ -39,3 +41,21 @@ router.get('/session', (req, res) =>{
         res.send('Bienvenido a tu primera visita')
     }
 })
+router.get('/', async(req,res) =>{
+    let testUser = {
+        name: 'Sofía',
+        last_name: 'Romero',
+        role: 'admin',
+    }
+    req.session.user = testUser.name
+    req.session.admin = true
+    
+    res.status(200).render('index', {
+        user: testUser,
+        isAdmin: testUser.role==='admin',
+        products,
+        style: 'index.css'
+    })
+})
+
+module.exports = router
