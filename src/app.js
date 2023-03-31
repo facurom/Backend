@@ -83,7 +83,7 @@ app.use('/', authRouter)
 
 app.use('/api/usuarios', auth , usersRouter)
 
-app.use('/api/productos', productsRouter)
+app.use('/api/productos', auth ,productsRouter)
 
 app.post('single', uploader.single('myfile'),(req,res)=>{
     res.status(200).json({

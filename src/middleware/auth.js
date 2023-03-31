@@ -1,8 +1,8 @@
 function auth (req, res, next){
-    if (req.session?.user === 'admin' && req.session?.admin ) {
-        return next()
+    if (req.session?.user.name ===! 'admin' || req.session?.admin ) {
+        return res.send('No estas autorizado para ver la página')
     }
-    return res.status(401).send('No autorizado')
+    return next()
 }
 
 module.exports = {
