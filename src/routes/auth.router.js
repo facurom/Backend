@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { UserModel } = require('../models/user.model')
 const { createHash, isValidPassword } = require('../utils/bcryptPass')
+const passport = require('passport')
 
 const router = Router()
 
@@ -41,33 +42,58 @@ router.post('/login', async (req, res) => {
     res.status(200).render('login')
 
 })
+router.get('/github', passport.authenticate('github', {scope: ['user: email']}))
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/api/auth/login'}), async (req, res) =>{
+    req.session.user = req.user
+    res.redirect('/api/products')
+})
+
+
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) return res.status(401).send({status: 'error', message:'todos los campos son obligatorios'}) 
+    const {email, password} = req.body
+     console.log(email, password)
+    // encripar la contraseña que viene del formulario, comparar con la encriptada de la base de datos
+     const user = await UserModel.findOne({email, password})
+    //const user = await users.find(user => user.email === email && user.password === password)
+    if (!user) return res.status(401).send({status:'error', error:'Credentials incorrect'})
 
-    
-
-    //if (!user) return res.status(401).send({status: 'error', message: 'Usuario o contraseña incorrectos'})
-    
-    const user = await UserModel.findOne({email})
-    
-    console.log(isValidPassword(user, password))
-
-    if (password === user.password) {
+    req.session.user = {
+        name: `${user.first_name} ${user.last_name}`,
         
+        email: user.email,
     }
+    
+    
+    
+    // const { email, password } = req.body
+    
+    // if (!email || !password) return res.status(401).send({status: 'error', message:'todos los campos son obligatorios'}) 
 
-    // req.session.user = {
-    //     name: `${user.first_name} ${user.last_name}`,
-    //     email: user.email
-        
+    
+
+    // //if (!user) return res.status(401).send({status: 'error', message: 'Usuario o contraseña incorrectos'})
+    
+    // const user = await UserModel.findOne({email})
+    
+    // console.log(isValidPassword(user, password))
+    
+    // console.log(isValidPassword(user, password))
+    
+    // if (!isValidPassword (user.password)) {
+    //     return res.status(401).send({status: 'error', message: 'Usuario o contraseña incorrectos'})
     // }
+
 
     res.status(200).send({
         status: 'success',
-        payload: req.session.user,
+        access_token,
         message:'Login correcto',
     })
+})
+
+router.get('/faillogin', async (req, res) =>{
+    res.status(400).json({error: 'failed login'})
 })
 
 router.post('/register', async (req, res) => {
@@ -76,30 +102,34 @@ router.post('/register', async (req, res) => {
 
 })
 
-router.post('/register', async (req, res) => {
-    const { first_name, last_name, email, password} = req.body
-    const exist = await UserModel.findOne({email})
-    if (exist) return res.status(401).send({status:'error', message:'El usuario ya existe'})
+router.post('/register', passport.authenticate('register', {failureRedirect: '/failregister'}), async (req, res) =>{
+//     const { first_name, last_name, email, password} = req.body
+//     const exist = await UserModel.findOne({email})
+//     if (exist) return res.status(401).send({status:'error', message:'El usuario ya existe'})
 
     
-    if(!first_name|| !last_name || !email || !password ){
-        return res.status(401).send({status: 'error', message: 'Todos los campos son obligatorios'})
-    }
-    const user = {
-        fist_name,
-       last_name,
-        email,
-       password: createHash(password) 
-    }
-    let result = await UserModel.create(user)
+//     if(!first_name|| !last_name || !email || !password ){
+//         return res.status(401).send({status: 'error', message: 'Todos los campos son obligatorios'})
+//     }
+//     const user = {
+//         fist_name,
+//        last_name,
+//         email,
+//        password: createHash(password) 
+//     }
+//     let result = await UserModel.create(user)
 
 
-    res.status(200).json({
+     res.status(200).json({
         status: 'succes',
-        //message: 'Usuario creado correctamente',
-        payload: result
-    })
+        message: 'Usuario registrado correctamente',
+        
+     })
 
+})
+router.get('/failregister', async (req, res) =>{
+    console.log('failregister')
+    res.status(400).json({error: 'failer register'})
 })
 router.post('/logout', async (req, res) => {
     req.session.destroy(err => {
@@ -113,15 +143,18 @@ router.post('/logout', async (req, res) => {
 
 
 
-// router.get('/session', (req, res) => {
-//     if (req.session.counter) {
-//         req.session.counter++
-//         res.send(`Bienvenido a tu visita número ${req.session.counter}`)
-//     } else {
-//         req.session.counter = 1
-//         res.send('Bienvenido a tu primera visita')
-//     }
-// })
+router.get('/restaurarpass', async (req, res) => {
+    const {email, password} = req.body;
+
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+        return res.status(401).send ({status: 'error', message: 'El usuario no existe'})       
+    }
+
+    //Hashear = actualizar la contraseña del usuario
+    user.password = createHash(password)
+    await user.save()
+})
 
 
 module.exports = router

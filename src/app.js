@@ -2,26 +2,46 @@
 import express, { response } from 'express'
 import { auth } from './middleware/auth'
 import { uploader, uploeader } from './utils'
+// express________________________________
+const express = require ('express')
 const cookieParser = require('cookie-parser')
+const handlebars = require('express-handlebars')
+const logger = require ('morgan')
+// session___________________________________
 const session = require('express-session')
 const FileStore = require('session-file-store')
 const MongoStore = require('connect-mongo')
-const express = require ('express')
 const usersRouter = require ('./routes/user.router')
+const productsRouter = require('./routes/productos.router')
+const authRouter = require('./routes/auth.router')
+//viewrouter_______________________________________
 const viewsRouter = require ('./routes/views.router')
+//cookie__________________________________-
 const cookieRouter = require ('./routes/cookie.router')
-const {uploader} = require('./utils')
+//handlebars____________________________________
+const {uploader} = require('./utils/multerConfig')
+//socketio______________________________________________________________
 const { Server } = require ('socket.io')
 const {dbConnection} = require('./config/conectionDB')
-const handlebars = require('express-handlebars')
-const authRouter = require('./routes/auth.router')
-const productsRouter = require('./routes/productos.router')
+const {configObject} = require ('./config/config')
+
+// passport________________________
+const passport = require ('passport')
+const {initPassport} =require('./config/passport.config')
+//________________-server
+const {httpServer} = require ('./server')
 
 
+const PORT = 8080 || process.env.PORT
+
+httpServer.listen(PORT,err =>{
+    if (err) console.log(err)
+    console.log(`Escuchando en el puerto ${httpServer.address().port}`)
+})
 
 dbConnection()
 const app = express()
-const PORT = 8080
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -42,6 +62,7 @@ app.use(cookieParser('p@l@bras3creta'))
 //     resave: true,
 //     saveUninitialized: false,
 // }))
+// session mongo___________________________________________________-
 app.use(session({
     store: MongoStore.create({
         mongoUrl:'mongodb://localhost:27017/backenddb',
@@ -57,8 +78,11 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
 }))
-
-//----------------------------------------
+// passport______________________________________________________________
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
+// handlebars_________________________________________________-
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
@@ -78,6 +102,9 @@ function mid2(req, res, next) {
     next()
 }
 
+
+//Client ID: Iv1.59ad9eab6fbabbf6
+//Client secreto: 93e7b88e0141b9bf55c1866bf04990bdcfea2c1a
 
 app.use('/', authRouter)
 
