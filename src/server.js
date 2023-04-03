@@ -14,6 +14,7 @@ const { Server: HttpServer } = require('http')
 const { Server: ServerIo } = require('socket.io')
 const { initProductsSocket } = require('./utils/productsSocketIo.js')
 const { router } = require('./routes')
+// passport_____________________________________________________________
 const { initializePassport } = require('./middleware/initialPassport.js')
 const passport = require('passport')
 
@@ -28,19 +29,19 @@ configObject.dbConnection()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(logger('dev'))
-
-// session mongo_______________________________________________________________
-app.use(session(configObject.session))
-
-app.use('/virtual' ,express.static(__dirname+'/public'))
 app.use(cookieParser())
-
 
 //initializePassport_________________________________________--
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 passport()
+
+// session mongo_______________________________________________________________
+app.use(session(configObject.session))
+
+app.use('/virtual' ,express.static(__dirname+'/public'))
+
 
 // handlebars_______________________________________________________________
 app.engine('handlebars', handlebars.engine())

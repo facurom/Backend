@@ -1,13 +1,33 @@
-const express = require('express')
-import { Router} from 'express'
-import {UserModel} from '../models/user.model'
-
+const passport = require ('passport')
+const {UserModel} = require ('../models/user.model')
 const {Router, response} = require ('express')
-
+const {passportCall} = require ('../utils/passportCall')
 const UserModel= requiere('../models/user.model.js')
 const router =  Router()
+const {authorization} = requiere ('../middleware/authorizatio.middleware')
 
 router.get('/', )
+// get http://localhost:8080/api/usuarios /
+router.get('/', passportCall('jwt'), authorization('admin'),async (req, res) =>{
+    try {
+        const { page = 1 } = req.query
+        const {  docs, hasPrevPage, hasNextPage, prevPage, nextPage } = await UserModel.paginate({ },{limit: 10, page, lean: true})
+        // console.log(users)
+        // const users = docs
+        res.status(200).render('users', {
+            users: docs,
+            hasPrevPage,
+            hasNextPage,
+            prevPage,
+            nextPage,
+            page
+        })
+    } catch (error) {
+        console.log(error) 
+    }
+})
+
+
 
 router.get('/', async (request, res) => {
     try {

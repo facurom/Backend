@@ -1,14 +1,14 @@
 //const express = require('express')
-import express, { response } from 'express'
+
 import { auth } from './middleware/auth'
 import { uploader, uploeader } from './utils'
-// express________________________________
-const express = require ('express')
-const cookieParser = require('cookie-parser')
-const handlebars = require('express-handlebars')
-const logger = require ('morgan')
+
+
+
+
+
 // session___________________________________
-const session = require('express-session')
+
 const FileStore = require('session-file-store')
 const MongoStore = require('connect-mongo')
 const usersRouter = require ('./routes/user.router')
@@ -21,7 +21,7 @@ const cookieRouter = require ('./routes/cookie.router')
 //handlebars____________________________________
 const {uploader} = require('./utils/multerConfig')
 //socketio______________________________________________________________
-const { Server } = require ('socket.io')
+
 const {dbConnection} = require('./config/conectionDB')
 const {configObject} = require ('./config/config')
 

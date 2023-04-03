@@ -1,7 +1,6 @@
 const {Router} = require ('express')
-import { response, Router } from 'express'
-import { authToken } from '../utils/jsonwt'
-
+const { authToken } = require ('../utils/jsonwt')
+const { ProductModel } = require('../models/product.model')
 const router = Router()
 
 
@@ -29,4 +28,15 @@ router.post('/.',(request, response) =>{
     const {name, price} = request.body
     response.status(200).send({name, price})
 })
+
+router.get('/', authToken, async (request, response) =>{
+    const productos = await ProductModel.find({})
+    response.status(200).json({
+        status: 'success',
+        payload: productos
+    })
+})
+
+
+
 module.express = router
