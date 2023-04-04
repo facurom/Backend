@@ -93,12 +93,12 @@ router.post('/login', async (req, res) => {
     // }
 
 
-    res.status(200).send({
-        status: 'success',
-        token,
-        message: 'Login correcto',
-    })
-})
+//     res.status(200).send({
+//         status: 'success',
+//         token,
+//         message: 'Login correcto',
+//     })
+// })
 
 router.get('/faillogin', async (req, res) => {
     res.status(400).json({ error: 'failed login' })

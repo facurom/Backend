@@ -1,5 +1,5 @@
 const passport = require ('passport')
-const {UserModel} = require ('../models/user.model')
+
 const {Router, response} = require ('express')
 const {passportCall} = require ('../utils/passportCall')
 const UserModel= requiere('../models/user.model.js')

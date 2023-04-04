@@ -1,7 +1,7 @@
 //const express = require('express')
 
-import { auth } from './middleware/auth'
-import { uploader, uploeader } from './utils'
+const { auth } = require ('./middleware/auth')
+
 
 
 
@@ -29,15 +29,11 @@ const {configObject} = require ('./config/config')
 const passport = require ('passport')
 const {initPassport} =require('./config/passport.config')
 //________________-server
-const {httpServer} = require ('./server')
+//const {httpServer} = require ('./server')
 
 
 const PORT = 8080 || process.env.PORT
 
-httpServer.listen(PORT,err =>{
-    if (err) console.log(err)
-    console.log(`Escuchando en el puerto ${httpServer.address().port}`)
-})
 
 dbConnection()
 const app = express()
