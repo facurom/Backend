@@ -20,15 +20,15 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    'Authorization': `Bearer ${localStorage.getItem(authToken)}`
+                    //'Authorization': `Bearer ${localStorage.getItem(authToken)}`
                 },
                 body: JSON.stringify({
                     email,
                     password
                 })
             })
-            .then(resp => resp.json())
-            .then(resp => localStorage.setItem('authToken' ,resp.acess_token))
+            //.then(resp => resp.json())
+            //.then(resp => localStorage.setItem('authToken' ,resp.acess_token))
         }
 
 

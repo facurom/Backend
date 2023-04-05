@@ -39,4 +39,4 @@ router.get('/', authToken, async (request, response) =>{
 
 
 
-module.express = router
+module.exports= router

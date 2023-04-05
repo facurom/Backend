@@ -35,7 +35,7 @@ app.use(cookieParser())
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
-passport()
+
 
 // session mongo_______________________________________________________________
 app.use(session(configObject.session))

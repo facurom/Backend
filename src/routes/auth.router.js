@@ -3,6 +3,7 @@ const { UserModel } = require('../models/user.model')
 const { createHash, isValidPassword } = require('../utils/bcryptPass')
 const passport = require('passport')
 const { generateToken } = require('../utils/jsonwt')
+const { token } = require('morgan')
 
 const router = Router()
 
@@ -69,33 +70,16 @@ router.post('/login', async (req, res) => {
     }
 
     const access_token = generateToken(user)
+    // res.status(200).send({
+    //     status: 'success',
+    //     token,
+    //     message: 'Login correcto',
+    // })
 
-
-
-    // const { email, password } = req.body
-
-    // if (!email || !password) return res.status(401).send({status: 'error', message:'todos los campos son obligatorios'}) 
-
-
-
-    // //if (!user) return res.status(401).send({status: 'error', message: 'Usuario o contraseña incorrectos'})
-
-    // const user = await UserModel.findOne({email})
-
-    // console.log(isValidPassword(user, password))
-
-    // console.log(isValidPassword(user, password))
-
-    // if (!isValidPassword (user.password)) {
-    //     return res.status(401).send({status: 'error', message: 'Usuario o contraseña incorrectos'})
-    // }
-
-
-    res.status(200).send({
-        status: 'success',
-        token,
-        message: 'Login correcto',
-    })
+    
+    res.cookie('coderCookieToken', token, {
+        maxAge: 60*60*1000
+    }).send({message:'logged in'})
 })
 
 router.get('/faillogin', async (req, res) => {
