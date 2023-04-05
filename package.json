@@ -21,5 +21,20 @@
   "scripts": {
     "start:dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facurom/Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/facurom/Backend/issues"
+  },
+  "homepage": "https://github.com/facurom/Backend#readme",
+  "description": ""
 }
