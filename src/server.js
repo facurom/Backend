@@ -7,7 +7,7 @@ const logger = require('morgan')
 const session = require('express-session')
 // socket io _______________________________________________________________
 const { configObject } = require('./config/config.js')
-// socket io _______________________________________________________________
+// socket io ________________________________________________________
 require('dotenv').config()
 
 const { Server: HttpServer } = require('http')

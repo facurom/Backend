@@ -12,9 +12,7 @@ const products = [
     { title: 'Jabon en crema', price: '750', imageUrl: '' },
 
 ]
-let users = [
-
-]
+let users = [{first_name: 'Sofi', last_name: 'Romero', email:'sofi.rom.rott@gmail.com', password:'so123'}]
 
 
 router.get('/', async (req, res) => {
@@ -61,14 +59,14 @@ router.post('/login', async (req, res) => {
     console.log(email, password)
     // encripar la contraseña que viene del formulario, comparar con la encriptada de la base de datos
     const user = await users.find(user => user.email === email && user.password === password)
-    //const user = await users.find(user => user.email === email && user.password === password)
+    //const user = await UserModel.findOne({email,password})
     if (!user) return res.status(401).send({ status: 'error', error: 'Credentials incorrect' })
 
-    // req.session.user = {
-    //     name: `${user.first_name} ${user.last_name}`,
+    req.session.user = {
+        name: `${user.first_name} ${user.last_name}`,
 
-    //     email: user.email,
-    // }
+        email: user.email,
+    }
 
     const access_token = generateToken(user)
 
@@ -93,12 +91,12 @@ router.post('/login', async (req, res) => {
     // }
 
 
-//     res.status(200).send({
-//         status: 'success',
-//         token,
-//         message: 'Login correcto',
-//     })
-// })
+    res.status(200).send({
+        status: 'success',
+        token,
+        message: 'Login correcto',
+    })
+})
 
 router.get('/faillogin', async (req, res) => {
     res.status(400).json({ error: 'failed login' })
@@ -127,7 +125,7 @@ router.post('/register', passport.authenticate('register', { failureRedirect: '/
     }
     //     let result = await UserModel.create(user)
     users.push(user)
-    const access_token = generateToken (user)
+    const access_token = generateToken(user)
 
     res.status(200).json({
         status: 'succes',

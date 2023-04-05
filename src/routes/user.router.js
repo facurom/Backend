@@ -2,9 +2,9 @@ const passport = require ('passport')
 
 const {Router, response} = require ('express')
 const {passportCall} = require ('../utils/passportCall')
-const UserModel= requiere('../models/user.model.js')
+const { UserModel } = require('../models/user.model')
 const router =  Router()
-const {authorization} = requiere ('../middleware/authorizatio.middleware')
+const {authorization} = require ('../middleware/authorization.middleware.js')
 
 router.get('/', )
 // get http://localhost:8080/api/usuarios /
@@ -66,7 +66,7 @@ router.post('/api/usuarios', (request, response) =>{
         message: 'usuario creado'
     })
 })
-router.put('/api/usuarios/: userId', (req, res = response) =>{
+router.put('/api/usuarios/: userId',async (req, res = response) =>{
     const { userId } = request.params
     const index = arrayUsuarios.findIndex(user => user.id === userId)
     

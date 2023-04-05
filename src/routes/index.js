@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const authRouter  = require('./auth.router.js')
-const usersRouter  = require('./users.router.js')
+const usersRouter  = require('./user.router.js')
 const productsRouter  = require('./productos.router.js')
 const { uploader } = require('../utils/multerConfig.js')
 

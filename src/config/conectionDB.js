@@ -1,7 +1,7 @@
 const { CartModel } = require("../models/cart.models")
 const { orderModel } = require("../models/order.models")
 const { UserModel } = require("../models/user.model")
-const { connect } = requiere('mongoose')
+const { connect } = require('mongoose')
 
 
 
