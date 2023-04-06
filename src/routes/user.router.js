@@ -8,7 +8,7 @@ const {authorization} = require ('../middleware/authorization.middleware.js')
 
 router.get('/', )
 // get http://localhost:8080/api/usuarios /
-router.get('/', passportCall('jwt'), authorization('admin'),async (req, res) =>{
+router.get('/', passportCall('jwt'), authorization('admin') ,async (req, res) =>{
     try {
         const { page = 1 } = req.query
         const {  docs, hasPrevPage, hasNextPage, prevPage, nextPage } = await UserModel.paginate({ },{limit: 10, page, lean: true})

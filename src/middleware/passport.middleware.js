@@ -14,13 +14,13 @@ const cookieExtractor = req => {
 
 const objectConfigPassport = {
     jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-    secretOrKey: 'superSecret'
+    secretOrKey: 'CoderSecret'
 }
 
 const initializePassport = ()=> {
     passport.use('jwt', new JWTStrategy(objectConfigPassport, async (jwt_payload, done)=>{
         try {
-            // validdaciones o traer el usuario de bd
+            // validdaciones o traer el usuario de la base de datos
             // if(!user) return done(null, false, {messages: 'No user found'})
             return done(null, jwt_payload)
         } catch (error) {

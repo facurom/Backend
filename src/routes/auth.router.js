@@ -13,7 +13,7 @@ const products = [
     { title: 'Jabon en crema', price: '750', imageUrl: '' },
 
 ]
-let users = [{first_name: 'Sofi', last_name: 'Romero', email:'sofi.rom.rott@gmail.com', password:'so123'}]
+let users = [{first_name: 'Sofi', last_name: 'Romero', email:'sofi.rom.rott@gmail.com', password:'so123', role: 'admin'}]
 
 
 router.get('/', async (req, res) => {
@@ -61,12 +61,13 @@ router.post('/login', async (req, res) => {
     // encripar la contraseña que viene del formulario, comparar con la encriptada de la base de datos
     const user = await users.find(user => user.email === email && user.password === password)
     //const user = await UserModel.findOne({email,password})
+    console.log(user)
     if (!user) return res.status(401).send({ status: 'error', error: 'Credentials incorrect' })
 
     req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
-
         email: user.email,
+        role: 'user'
     }
 
     const access_token = generateToken(user)
@@ -78,7 +79,8 @@ router.post('/login', async (req, res) => {
 
     
     res.cookie('coderCookieToken', token, {
-        maxAge: 60*60*1000
+        maxAge: 60*60*1000,
+        httpOnly: true //solo se activa en consultas http
     }).send({message:'logged in'})
 })
 
