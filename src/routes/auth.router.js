@@ -42,113 +42,79 @@ router.get('/', async (req, res) => {
 //     })
 
 // })
-
-router.post('/login', async (req, res) => {
+//_________________________________________________________________________
+router.get('/login', async (req, res)=>{    
     res.status(200).render('login')
-
 })
-router.get('/github', passport.authenticate('github', { scope: ['user: email'] }))
-
-router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/api/auth/login' }), async (req, res) => {
-    req.session.user = req.user
-    res.redirect('/api/products')
-})
-
-
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    console.log(email, password)
+router.post('/login', async (req, res)=>{
+    const {email, password} = req.body
+    //  console.log(email, password)
     // encripar la contraseña que viene del formulario, comparar con la encriptada de la base de datos
+    // const user = await UserModel.findOne({email, password})
     const user = await users.find(user => user.email === email && user.password === password)
-    //const user = await UserModel.findOne({email,password})
-    console.log(user)
-    if (!user) return res.status(401).send({ status: 'error', error: 'Credentials incorrect' })
+    // console.log(user)
 
-    req.session.user = {
-        name: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        role: 'user'
-    }
+    if (!user) return res.status(401).send({status: 'error', error: 'Invalid credentials'})
+    
+    // req.session.user = {
+    //     name: `${user.first_name} ${user.last_name}`,
+    //     email: user.email,
+    //     role: 'user'
+    // }
 
-    const access_token = generateToken(user)
+    const token = generateToken(user)
+
     // res.status(200).send({
     //     status: 'success',
-    //     token,
+    //     access_token,
     //     message: 'Login correcto',
     // })
 
-    
     res.cookie('coderCookieToken', token, {
         maxAge: 60*60*1000,
-        httpOnly: true //solo se activa en consultas http
-    }).send({message:'logged in'})
+        httpOnly: true
+    }).send({message: 'logged in'})
 })
 
-router.get('/faillogin', async (req, res) => {
-    res.status(400).json({ error: 'failed login' })
-})
-
-router.post('/register', async (req, res) => {
-
+router.get('/register', async (req, res)=>{
+    
     res.status(200).render('register')
-
 })
 
-router.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }), async (req, res) => {
+router.post('/register', async (req, res)=>{ // con basae de datos
     const { first_name, last_name, email, password } = req.body
-    const exist = await users.find(user => user.email === email)
-    if (exist) return res.status(401).send({ status: 'error', error: 'El usuario ya existe' })
 
+    // pregintar si existe el usuario
+    // const exists = await UserModel.findOne({email})
+    const exists = await users.find(user => user.email === email)
 
-    //     if(!first_name|| !last_name || !email || !password ){
-    //         return res.status(401).send({status: 'error', message: 'Todos los campos son obligatorios'})
-    //     }
+    if (exists) return res.status(401).send({status: 'error', error: 'El usuario ya existe'})
+
     const user = {
-        fist_name,
+        first_name,
         last_name,
         email,
-        password: createHash(password)
+        password 
     }
-    //     let result = await UserModel.create(user)
+    // let result = await UserModel.create(user)
     users.push(user)
     const access_token = generateToken(user)
 
     res.status(200).json({
-        status: 'succes',
-        //message: 'Usuario registrado correctamente',
-        access_token,
-
+        status: 'success',
+        access_token
     })
+})
 
-})
-router.get('/failregister', async (req, res) => {
-    console.log('failregister')
-    res.status(400).json({ error: 'failer register' })
-})
-router.post('/logout', async (req, res) => {
+router.get('/logout', async (req, res)=>{
+    // session.destroy()
     req.session.destroy(err => {
-        if (err) return res.send({ status: 'Logout error', message: err })
+        if(err) return res.send({status:'Logout error', message: err})           
     })
-    res.status(200).redirect('/login')
-
+    res.status(200).redirect('/api/auth/login')
 })
-
-
-
-
-
-router.get('/restaurarpass', async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-        return res.status(401).send({ status: 'error', message: 'El usuario no existe' })
-    }
-
-    //Hashear = actualizar la contraseña del usuario
-    user.password = createHash(password)
-    await user.save()
-})
-
 
 module.exports = router
+
+
+

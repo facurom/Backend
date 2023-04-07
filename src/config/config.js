@@ -1,22 +1,28 @@
 const MongoStore = require('connect-mongo')
-const { connect } = require('mongoose')
+const { connect, default: mongoose } = require('mongoose')
 
 
-const url = 'mongodb://localhost:27017/backenddb'
+let url = 'mongodb://localhost:27017/backenddb'
 
-let configObject = {
+const configObject = {
     dbConnection:  async () => {
         try {
-            await connect(url)
-            console.log('DB conectada')  
+            // set('stictQuery', set) // sacar leyenda en la consola de deprecado
+            await mongoose.connect(url, {
+                useNewUrlParser: true,   // mongodb mongodb+srv://
+                useUnifiedTopology: true
+            })
+            // conección base de dato
+            console.log('base de dato conectada')
+            
         } catch (error) {
             console.log(error)
-            process.exit()
+            
         }        
     },
     session: {
-        store: MongoStore.create({
-            mongoUrl: 'mongodb://localhost:27017/backenddb',
+        store: MongoStore.create({    // new MongoStore === new require('connect-mongo')
+            mongoUrl: url,
             mongoOptions: {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -25,8 +31,10 @@ let configObject = {
         }), 
         secret: 's3cr3t0',
         resave: false,
-        saveUninitialized: false,
+        //saveUninitialized: false,
     }
 }
 
-module.exports = { configObject }
+module.exports = { 
+    configObject 
+}

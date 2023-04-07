@@ -38,7 +38,7 @@ app.use(passport.session())
 
 
 // session mongo_______________________________________________________________
-app.use(session(configObject.session))
+//app.use(session(configObject.session))
 
 app.use('/virtual' ,express.static(__dirname+'/public'))
 
