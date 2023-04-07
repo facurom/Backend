@@ -1,8 +1,9 @@
 const { Router } = require('express')
 const authRouter  = require('./auth.router.js')
-const usersRouter  = require('./user.router.js')
+const usersRouter  = require('./users.router.js')
 const productsRouter  = require('./productos.router.js')
 const { uploader } = require('../utils/multerConfig.js')
+const UserRouter = require('./user.router.js')
 
 const router = Router()
 
@@ -13,6 +14,12 @@ router.use('/api/usuarios', usersRouter)
 
 // http://localhost:8080/api/productos
 router.use('/api/productos', productsRouter)
+
+let userRouter = new UserRouter()
+router.use('/user', userRouter.getRouter())
+
+
+
 
 router.post('/single', uploader.single('myfile') ,(req, res)=>{
     res.status(200).json({
