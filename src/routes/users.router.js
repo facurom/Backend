@@ -29,76 +29,63 @@ router.get('/', passportCall('jwt'), authorization('admin') ,async (req, res) =>
 
 
 
-router.get('/', async (request, res) => {
-    try {
-        const {page= 1} = req.query
-        const {docs, hasPrevPage, hasNextPage, prevPage, nextPage} = await UserModel.paginate({}, {limit:10, page, lean: true })
-        //const users= docs
-        res.status(200).send('users',{
-           users: docs, 
-           hasPrevPage, 
-           hasNextPage, 
-           prevPage, 
-           nextPage,
-           page
-        }
-            )
-    } catch (error) {
-        console.log(error)
-    }
-    
-})
-
 router.get('/:id', (request, response = res ) =>{
     const {id} = request.params
     response.status(200).send(id)
 })
-router.post('/api/usuarios', (request, response) =>{
-    let user = request.body
-    if (user.name || !user.apellido) {
-        return response.status(400).send({ mesagge: 'pasar los datos'})
-        
-    }
-    arrayUsuarios.push(user)
-    console.log(arrayUsuarios)
-    response.status(201).send({
-        user,
-        message: 'usuario creado'
-    })
-})
-router.put('/api/usuarios/: userId',async (req, res = response) =>{
-    const { userId } = request.params
-    const index = arrayUsuarios.findIndex(user => user.id === userId)
-    
+router.post('/', async (request, response) =>{
     try {
-        let (nombre, apellido, email) = request.body
-        if (!nombre || !apellido || !email){
-            return res.status(400).send({message:'pasar todos los datos'})
+        let {nombre, apellido, email } = req.body
+        if (!nombre || !apellido || !email) {
+            return res.status(400).send({ message: 'Pasar todos los datos'})
         }
         
-        let result = await UserModel.create({
+        let result  = await UsersModel.create({
             nombre,
             apellido,
             email
         })
-        res.status(201).send({
+        // validación
+    
+        res.status(201).send({ 
             status: 'success',
             result
-        }) 
+        })
+        
     } catch (error) {
         console.log(error)
     }
     
+})
+router.put('/:uid',async (req, res) =>{
+    const { uid } = request.params
+    let (nombre, apellido, email) = request.body
+    
+    
+    if (!nombre || !apellido || !email){
+            return res.status(400).send({message:'pasar todos los datos'})
+        }
+        
+        let result = await UsersModel.updateOne({ _id: uid }, { nombre })
+        res.status(201).send({
+            status: 'success',
+            result
+        }) 
+     
+        console.log(error)
+    
+    
 
     
 })
-router.delete('/api/usuarios/:userId' , (request, response) =>{
-    let arrayUsuarios = arrayUsuarios.lenght
-    let users = arrayUsuarios.filter (user => user.id ===!userId)
-    console.log(users.lenght)
-    if (users.lenght === arrayTamanno) {
-        res.status(404).send({ message: "Usuario no encontrado"})
-    }
-    res.status(200).send({ message: "Usuario borrado", users})    
+router.delete('/:uid' , async (req, res) =>{
+    const { uid } = req.params
+    await UsersModel.deleteOne({_id: uid})
+    
+    res.status(200).send({ 
+        status: 'success',
+        result: true
+     })
+    
 })
 module.exports = router

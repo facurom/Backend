@@ -81,7 +81,7 @@ router.get('/register', async (req, res)=>{
     res.status(200).render('register')
 })
 
-router.post('/register', async (req, res)=>{ // con basae de datos
+router.post('/register', async (req, res)=>{ // con base de datos
     const { first_name, last_name, email, password } = req.body
 
     // pregintar si existe el usuario
