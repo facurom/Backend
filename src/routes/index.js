@@ -6,6 +6,7 @@ const { uploader } = require('../utils/multerConfig.js')
 const UserRouter = require('./user.router.js')
 
 const router = Router()
+router.use('/fork', forkRouter)
 
 router.use('/api/auth', authRouter)
 

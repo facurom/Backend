@@ -1,40 +1,32 @@
 const { Router } = require('express')
+const { ParametrosController: { getSearchWord, definirParams } } = require('../Controllers/parametros.controller')
 
 const router = Router()
 
-const dictionarySercvie = [ // simulando busqueda
-    {word: 'hola', lenguage: 'español'},
-    {word: 'hello', lenguage: 'ingles'},
-    {word: 'hola', lenguage: 'ingles'},
-]
+/// Prueba de ruta con parámetros____________________________________________________
 
-router.param('word', async (req, res,next, word) => {
-    let searchWord = await dictionarySercvie.find(palabra => palabra.word === word)
+router.param('word', definirParams)
 
-    if (!searchWord) {
-        req.word=null
-    } else {
-        req.word = searchWord.word
-    }
-    next()
-})
 
-//byte utf-8  a´= %C3%A1    é = %C3%A9
-router.get('/:word([a-z]+)', (req, res) => {
-    res.send(req.params.word)
-})
+//número 1
+// GET api/parametros /:category
+// router.get('/:word([a-zA-Z]+)', getSearchWord)
 
-// router.get('/:word([a-z%C3%A1%C3%A9%C3%AD]+)', (req, res) => {
-//     res.send(req.params.word)
-// })
+//número 2
+router.get('/:word([a-z%C3%A1%C3%A9%C3%AD%C3%B3%C3%BA%C3%BC]+)', getSearchWord)
 
 // router.get('/:word([A-Z%C3%81%C3%89%C3%8D%C3%93%C3%9A%C3%9C]+)/:lenguage([a-z])', getSearcWord)
 // router.put('/:word([A-Z%C3%81%C3%89%C3%8D%C3%93%C3%9A%C3%9C]+))', getSearcWord)
 // router.delete('/:word([A-Z%C3%81%C3%89%C3%8D%C3%93%C3%9A%C3%9C]+))', getSearcWord)
 
+// número 3
+
+
 
 router.get('*', async (req, res)=>{
-    res.status(404).send('no se encuentra ninguna ruta')
+    res.status(404).json({
+        mensaje: 'ruta no encontrada'
+    })
 })
 
 module.exports = router

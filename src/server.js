@@ -5,6 +5,7 @@ const handlebars = require('express-handlebars')
 const logger = require('morgan')
 // session_______________________________________________________________
 const session = require('express-session')
+const cors = require('cors')
 // socket io _______________________________________________________________
 const { configObject } = require('./config/config.js')
 // socket io ________________________________________________________
@@ -28,7 +29,7 @@ configObject.dbConnection()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.use(logger('dev'))
+app.use(cors())
 app.use(cookieParser())
 
 //initializePassport_________________________________________--

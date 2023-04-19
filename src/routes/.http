@@ -9,3 +9,6 @@ Content-Type: application/json
     "email":"sofi@gmail.com",
     "password": "sofi123"
 }
+
+###
+GET http://localhost:8080/fork

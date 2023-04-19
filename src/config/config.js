@@ -1,25 +1,43 @@
 const MongoStore = require('connect-mongo')
 const { connect, default: mongoose } = require('mongoose')
+const dotenv = require('dotenv')
+const { commander } = require('../utils/commander')
+const MongoSingleton = require('./MongoSingleton')
+// const environment = 'development'
 
 
-let url = 'mongodb://localhost:27017/backenddb'
+const { mode } = commander.opts()
+dotenv.config({
+    path: mode === 'development' ? './.env.development' : './.env.production'
+})
+
+const url = process.env.MONGO_URL 
+
+
+
+
+
+
+
+
 
 const configObject = {
-    dbConnection:  async () => {
-        try {
-            // set('stictQuery', set) // sacar leyenda en la consola de deprecado
-            await mongoose.connect(url, {
-                useNewUrlParser: true,   // mongodb mongodb+srv://
-                useUnifiedTopology: true
-            })
-            // conección base de dato
-            console.log('base de dato conectada')
+    port: process.env.PORT || 8080, 
+    mongoUrl: process.env.MONGO_URL, 
+    adminName:process.env.ADMIN_NAME || 'admin',
+    adminPassword:process.env.ADMIN_PASSWORD || 'admin',
+    // dbConnection:  async () => {
+    //     try {
+    //         // set('stictQuery', set) // sacar leyenda en la consola de deprecado
+    //         await connect(url)
+    //          console.log('base de dato conectada')
             
-        } catch (error) {
-            console.log(error)
+    //     } catch (error) {
+    //         console.log(error)
             
-        }        
-    },
+    //     }        
+    // },
+    dbConnection: () => MongoSingleton.getInstance(),
     session: {
         store: MongoStore.create({    // new MongoStore === new require('connect-mongo')
             mongoUrl: url,
@@ -31,7 +49,7 @@ const configObject = {
         }), 
         secret: 's3cr3t0',
         resave: false,
-        //saveUninitialized: false,
+        saveUninitialized: false,
     }
 }
 
