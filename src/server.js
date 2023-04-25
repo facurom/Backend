@@ -49,6 +49,9 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
  
+//toy____________________________________________________
+app.use('/api/users', usersRouter)
+app.use('/api/toys', toysRouter)
 
 app.use(router)
 

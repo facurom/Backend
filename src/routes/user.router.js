@@ -1,6 +1,7 @@
 // const {Router} = require('express')
 const Router  = require("./rutes")
 const jwt = require('jsonwebtoken')
+const usersController = require('../Controllers/users.controller')
 
 class UserRouter extends Router {
     init(){
@@ -25,6 +26,8 @@ class UserRouter extends Router {
         })
     }
 }
+router.get('/', usersController.getAllUsers)
+router.post('/', usersController.createUser)
 
 module.exports = UserRouter
 
