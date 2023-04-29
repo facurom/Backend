@@ -1,45 +1,29 @@
 const MongoStore = require('connect-mongo')
-const { connect, default: mongoose } = require('mongoose')
+const { connect } = require('mongoose')
 const dotenv = require('dotenv')
 const { commander } = require('../utils/commander')
 const MongoSingleton = require('./MongoSingleton')
-// const environment = 'development'
 
+const { mode } =  commander.opts()
 
-const { mode } = commander.opts()
+const enviroment = mode || "development"
+
 dotenv.config({
-    path: mode === 'development' ? './.env.development' : './.env.production'
+    path: enviroment === 'development'? './.env.development' : './.env.production'
 })
 
-const url = process.env.MONGO_URL 
 
+const url = process.env.MONGO_URL || 'mongodb://localhost:27017/backenddb'
 
-
-
-
-
-
-
-
-const configObject = {
-    port: process.env.PORT || 8080, 
-    mongoUrl: process.env.MONGO_URL, 
-    adminName:process.env.ADMIN_NAME || 'admin',
-    adminPassword:process.env.ADMIN_PASSWORD || 'admin',
-    // dbConnection:  async () => {
-    //     try {
-    //         // set('stictQuery', set) // sacar leyenda en la consola de deprecado
-    //         await connect(url)
-    //          console.log('base de dato conectada')
-            
-    //     } catch (error) {
-    //         console.log(error)
-            
-    //     }        
-    // },
+module.exports = {
+    PORT: process.env.PORT || 8000,
+    MONGO_URL: url,
+    adminName: process.env.ADMIN_NAME || 'admin',
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin', 
+    persistence: process.env.PERSISTENCE,  
     dbConnection: () => MongoSingleton.getInstance(),
     session: {
-        store: MongoStore.create({    // new MongoStore === new require('connect-mongo')
+        store: MongoStore.create({
             mongoUrl: url,
             mongoOptions: {
                 useNewUrlParser: true,
@@ -47,12 +31,10 @@ const configObject = {
             },
             ttl: 15000000000
         }), 
-        secret: 's3cr3t0',
+        secret: 'secret0',
         resave: false,
         saveUninitialized: false,
     }
 }
 
-module.exports = { 
-    configObject 
-}
+

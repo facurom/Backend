@@ -7,7 +7,7 @@ const logger = require('morgan')
 const session = require('express-session')
 const cors = require('cors')
 // socket io _______________________________________________________________
-const { configObject } = require('./config/config.js')
+const  configObject  = require('./config/config.js')
 // socket io ________________________________________________________
 require('dotenv').config()
 

@@ -1,4 +1,4 @@
-const { configObject } = require("./config/config.js");
+const  configObject  = require("./config/config.js");
 const { httpServer } = require("./server.js");
 
 

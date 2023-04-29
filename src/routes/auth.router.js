@@ -1,5 +1,6 @@
 const { Router } = require('express')
-const { UserModel } = require('../models/user.model')
+//const { UserModel } = require('../models/user.model')
+const { UserModel } = require('../Dao/mongo/models/user.model')
 const { createHash, isValidPassword } = require('../utils/bcryptPass')
 const passport = require('passport')
 const { generateToken } = require('../utils/jsonwt')
