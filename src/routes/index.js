@@ -2,6 +2,9 @@ const { Router } = require('express')
 const authRouter  = require('./auth.router.js')
 const usersRouter  = require('./users.router.js')
 const productsRouter  = require('./productos.router.js')
+const ordersRouter  = require('./orders.router.js')
+const parametrosRouter = require('./params.routes.js')
+const forkRouter  = require('./fork.router.js')
 const { uploader } = require('../utils/multerConfig.js')
 const UserRouter = require('./user.router.js')
 
@@ -15,6 +18,13 @@ router.use('/api/usuarios', usersRouter)
 
 // http://localhost:8080/api/productos
 router.use('/api/productos', productsRouter)
+
+router.use('/api/orders', ordersRouter)
+
+router.use('/api/parametros', parametrosRouter)
+
+
+
 
 let userRouter = new UserRouter()
 router.use('/user', userRouter.getRouter())
