@@ -1,7 +1,7 @@
 const { Router, response } = require('express')
 const passport = require('passport')
 const { passportCall } = require('../utils/passportCall')
-const { authorization } = require('../middleware/authorization.middleware')
+const { authorization } = require('../middleware/authorization.middleware.js')
 const { 
     getUsers, 
     getUser,

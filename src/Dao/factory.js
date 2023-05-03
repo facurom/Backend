@@ -14,7 +14,7 @@ switch (persistence) {
         const UserDaoMongo = require('./mongo/user.mongo.js')
         UserDao = UserDaoMongo
 
-        const OrderDaoMongo = require('./mongo/oder.mongo.js')
+        const OrderDaoMongo = require('./mongo/models/order.mongo.js')
         OrderDao = OrderDaoMongo
         break;
     case 'MEMORY':

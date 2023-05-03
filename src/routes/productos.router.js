@@ -1,6 +1,6 @@
 const {Router} = require ('express')
 const { authToken } = require ('../utils/jsonwt')
-const { ProductModel } = require('../models/product.model')
+//const { ProductModel } = require('../models/product.model')
 //const router = Router()
 const {
     getProdutcs,

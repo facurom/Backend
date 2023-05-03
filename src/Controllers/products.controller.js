@@ -1,9 +1,10 @@
-const { productService } = require("../repositories")
+const { productService } = require("../routes/repositories")
 
 
 class ProductClass {
     
     getProdutcs = async (req, res) =>{
+        console.log('products get')
         const {limit, page, category, sort} = req.query
 
         const { docs, totalPages,hasPrevPage, hasNextPage, prevPage, nextPage } = await productService.getProducts({limit, page, category, sort})               

@@ -26,6 +26,7 @@ const twilio = require('twilio')
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new ServerIo(httpServer)
+const usersRouter = require('./routes/user.router.js')
 
 // oncección con la base de datos mongo __________________________________________________________________
 configObject.dbConnection()
@@ -37,9 +38,9 @@ app.use(cors())
 app.use(cookieParser())
 
 //initializePassport_________________________________________--
-initializePassport()
-app.use(passport.initialize())
-app.use(passport.session())
+// initializePassport()
+// app.use(passport.initialize())
+// app.use(passport.session())
 //_____________________________________________________
 app.use(logger('dev'))
 
@@ -55,8 +56,8 @@ app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
  
 //toy____________________________________________________
-app.use('/api/users', usersRouter)
-app.use('/api/toys', toysRouter)
+// app.use('/api/users', usersRouter)
+//app.use('/api/toys', toysRouter)
 
 app.use(router)
 const TEST_MAIL= process.env.TEST_MAIL_ADMIN

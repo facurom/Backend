@@ -1,4 +1,4 @@
-const { orderService } = require("../repositories")
+const { orderService } = require("../routes/repositories")
 
 class OrdersController {
     async getOrders(req, res){

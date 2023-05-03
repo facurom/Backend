@@ -1,4 +1,4 @@
-const { userService } = require('../repositories')
+const { userService } = require('../routes/repositories')
 
 class UserController {
 

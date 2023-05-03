@@ -2,7 +2,7 @@ const  configObject  = require("./config/config.js");
 const { httpServer } = require("./server.js");
 
 
-const PORT = configObject.port
+const PORT = configObject.PORT
 
 
 httpServer.listen(PORT,err =>{
