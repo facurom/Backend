@@ -28,9 +28,9 @@ router.use(compression({
     }
 }))
 router.get('/stingmuylargo', (req, res)=>{
-    let string = 'Hola Coders, soy un string ridiculamente largo'
+    let string = 'Hola, este tring es muy largo'
     for( let i = 0; i < 5e4; i++){
-        string += 'Hola Coders, soy un string ridiculamente largo'
+        string += 'Hola, este tring es muy largo'
     }
     res.status(200).send(string)
 })
