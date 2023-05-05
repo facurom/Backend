@@ -3,7 +3,7 @@ const authRouter  = require('./auth.router.js')
 const usersRouter  = require('./users.router.js')
 const productsRouter  = require('./productos.router.js')
 const fakerRouter = require('../routes/faker.router.js')
-const cartRouter = require('./carrito.router.js')
+//const cartRouter = require('./carrito.router.js')
 const ordersRouter  = require('./orders.router.js')
 const parametrosRouter = require('./params.routes.js')
 const forkRouter  = require('./fork.router.js')
@@ -23,7 +23,7 @@ router.use('/api/productos', productsRouter)
 
 router.use('/api/orders', ordersRouter)
 
-router.use('/api/carts', cartRouter)
+//router.use('/api/carts', cartRouter)
 
 router.use('/api/parametros', parametrosRouter)
 
