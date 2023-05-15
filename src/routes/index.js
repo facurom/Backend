@@ -9,6 +9,7 @@ const parametrosRouter = require('./params.routes.js')
 const forkRouter  = require('./fork.router.js')
 const { uploader } = require('../utils/multerConfig.js')
 const UserRouter = require('./user.router.js')
+const pruebaRouter = require('./prueba.router.js')
 
 const router = Router()
 router.use('/fork', forkRouter)
@@ -23,11 +24,13 @@ router.use('/api/productos', productsRouter)
 
 router.use('/api/orders', ordersRouter)
 
-//router.use('/api/carts', cartRouter)
+//router.use('/carts', cartRouter)
 
 router.use('/api/parametros', parametrosRouter)
 
 router.use('/faker', fakerRouter)
+
+router.use('/prueba', pruebaRouter)
 
 
 

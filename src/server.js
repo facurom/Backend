@@ -27,6 +27,7 @@ const app = express()
 const httpServer = new HttpServer(app)
 const io = new ServerIo(httpServer)
 const usersRouter = require('./routes/user.router.js')
+const { addLogger } = require('./middleware/logger.js')
 
 // oncección con la base de datos mongo __________________________________________________________________
 configObject.dbConnection()
@@ -41,8 +42,9 @@ app.use(cookieParser())
 // initializePassport()
 // app.use(passport.initialize())
 // app.use(passport.session())
-//_____________________________________________________
-app.use(logger('dev'))
+// Middleware_____________________________________________________
+app.use(addLogger)
+//app.use(logger('dev'))
 
 // session mongo_______________________________________________________________
 app.use(session(configObject.session))
