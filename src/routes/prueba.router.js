@@ -80,6 +80,7 @@ router.get('/compleja', (req, res) => {
     }
     res.send(`La suma es ${sum}`)
 })
+//artillery quick --count 40 --num 50 "http://localhost:8080/pruebas/simple" -o simple.json
 
 router.get('/warning', async (req, res) => {
     
