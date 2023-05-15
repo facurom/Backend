@@ -21,8 +21,11 @@ const UserSchema = Schema({
     password: String
 })
 
-UserSchema.plugin(mongoosePaginate)
+UserSchema.methods.toJSON = function (params) {
+    const {_v, ...data} = this.toObject()
+    return data
+}
 
-let UserModel = model(userCollection, UserSchema)
+const UserModel = model(userCollection, UserSchema)
 
 module.exports = {UserModel}
