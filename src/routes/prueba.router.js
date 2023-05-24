@@ -2,8 +2,8 @@ const { Router } = require('express')
 const compression = require('express-compression')
 const {faker} = require('@faker-js/faker')
 
-const parametrosRouter  = require('./parametros.router.js')
-const mailingRouter  = require('./mailing.router.js')
+const parametrosRouter  = require('./params.routes')
+//const mailingRouter  = require('./mailing.router.js')
 const forkRouter  = require('./fork.router.js')
 const fakerRouter  = require('./faker.router.js')
 const { uploader } = require('../utils/multerConfig.js')
@@ -17,7 +17,7 @@ router.use('/fork', forkRouter)
 // http://localhost:8080/api/param
 router.use('/parametros', parametrosRouter)
 
-router.use('/mailing', mailingRouter)
+//router.use('/mailing', mailingRouter)
 
 router.use('/faker', fakerRouter)
 // router.use(compression())

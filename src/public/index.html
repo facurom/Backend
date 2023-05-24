@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba</title>
+    <title>Document</title>
 </head>
 <body>
     <h1>Soy index</h1>
     <form action="/single" method="POST" enctype="multipart/form-data">
      <input type="file" name="myfile">
      <button type="submit">Subir</button>   
+    </form>
+
+    <h2>Crear usuario</h2>
+    <form action="/api/user" method="POST">
+        <input type="text" name="first_name" placeholder="Nombre">
+        <input type="text" name="last_name" placeholder="Apellido">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Contraseña">
+        <button type="submit">Crear usuario</button>
     </form>
 </body>
 </html>

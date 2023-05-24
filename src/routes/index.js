@@ -9,7 +9,7 @@ const parametrosRouter = require('./params.routes.js')
 const forkRouter  = require('./fork.router.js')
 const { uploader } = require('../utils/multerConfig.js')
 const UserRouter = require('./user.router.js')
-const pruebaRouter = require('./prueba.router.js')
+const pruebaRouter = require('../routes/prueba.router.js')
 
 const router = Router()
 router.use('/fork', forkRouter)

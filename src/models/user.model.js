@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userCollection = 'Usuarios'
+
+
 const UserSchema = Schema({
     first_name: {
         type: String,
@@ -18,13 +20,19 @@ const UserSchema = Schema({
       unique: true
 
     },
-    password: String
+    password: String,
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user'
+    }
 })
 
 UserSchema.methods.toJSON = function (params) {
     const {_v, ...data} = this.toObject()
     return data
 }
+//UserSchema.plugin(mongoosePaginate)
 
 const UserModel = model(userCollection, UserSchema)
 

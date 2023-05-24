@@ -32,7 +32,7 @@ const { addLogger } = require('./middleware/logger.js')
 // oncección con la base de datos mongo __________________________________________________________________
 configObject.dbConnection()
 
-app.use('/virtual' ,express.static(__dirname+'/public'))
+app.use(express.static(__dirname+'/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors())
@@ -60,6 +60,51 @@ app.set('view engine', 'handlebars')
 //toy____________________________________________________
 // app.use('/api/users', usersRouter)
 //app.use('/api/toys', toysRouter)
+app.get('/api/user', async (req, res) =>{    
+    try {  
+        const { limit=5, page=1 }= req.query
+        console.log('limit: ', limit)
+        console.log('page: ', page)
+        const result = await UserModel.paginate({}, {limit, page})           
+        res.status(200).send({
+            status: 'success',
+            payload: result
+        })
+    } catch (error) {
+        console.log(error) 
+    }
+})
+app.post('/api/user', async (req, res) =>{
+    //mada el  cliente request 
+    try {
+        let {first_name, last_name, email, password } = req.body
+
+        if (!first_name || !last_name || !email || !password) {
+            return res.status(400).send({ 'error': error})
+        }           
+
+        let result= await UserModel.create({            
+                        first_name,
+                        last_name,
+                        email,
+                        password
+                    })
+    
+        res.status(201).send({ 
+            status: 'success',
+            payload: result
+        })
+        
+    } catch (error) {
+        console.dir(error)            
+    }
+        
+    
+})
+    
+
+
+
 
 app.use(router)
 const TEST_MAIL= process.env.TEST_MAIL_ADMIN
