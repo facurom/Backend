@@ -49,7 +49,10 @@ app.use(addLogger)
 // session mongo_______________________________________________________________
 app.use(session(configObject.session))
 
-
+//Clase de cluster------------------------------------
+const cluster = require('cluster')
+const { cpus } = require('os')
+const numeroProcesadore = cpus().length
 
 
 // handlebars_______________________________________________________________
