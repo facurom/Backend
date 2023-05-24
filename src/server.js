@@ -184,7 +184,7 @@ app.use((err, req, res, next) => {
 // socket_______________________________________________________________
 initProductsSocket(io)
 
-//clase de clustering
+//clase de clustering---------------------------------
 if (cluster.isPrimary) {
     console.log('Proceso primario, generando un proceso trabajador')
     for (let i = 0; i < numeroProcesadore; i++) {
