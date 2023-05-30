@@ -10,8 +10,11 @@ const storage = multer.diskStorage({
     }
 })
 
-const uploader = multer({storage, onError: function(err,next){
-    console.log(err)
-    next()
-}})
+const uploader = multer({
+    storage, 
+    onError: function(err,next){console.log(err)
+        next()
+    }
+    
+})
 module.exports = {uploader}

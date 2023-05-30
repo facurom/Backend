@@ -2,21 +2,21 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
+const { uploader} = require('./utils/multerConfig')
 const logger = require('morgan')
 // session_______________________________________________________________
 const session = require('express-session')
 const cors = require('cors')
 // socket io _______________________________________________________________
 const configObject = require('./config/config.js')
-// socket io ________________________________________________________
-//require('dotenv').config()
+
 
 const { Server: HttpServer } = require('http')
 const { Server: ServerIo } = require('socket.io')
 const { initProductsSocket } = require('./utils/productsSocketIo.js')
 const { router } = require('./routes')
 // passport_____________________________________________________________
-const { initializePassport } = require('./middleware/initialPassport.js')
+//const { initializePassport } = require('./middleware/initialPassport.js')
 const passport = require('passport')
 
 // const nodemailer = require('nodemailer')
@@ -40,7 +40,7 @@ app.use(cookieParser())
 
 //initializePassport_________________________________________--
 // initializePassport()
-// app.use(passport.initialize())
+app.use(passport.initialize())
 // app.use(passport.session())
 // Middleware_____________________________________________________
 app.use(addLogger)
@@ -109,16 +109,16 @@ app.post('/api/user', async (req, res) => {
 
 
 
-app.use(router)
-const TEST_MAIL = process.env.TEST_MAIL_ADMIN
-const transport = createTransport({
-    service: 'gmail',
-    port: 578,
-    auth: {
-        user: TEST_MAIL,
-        pass: process.env.TEST_MAIL_PASS
-    }
-})
+// app.use(router)
+// const TEST_MAIL = process.env.TEST_MAIL_ADMIN
+// const transport = createTransport({
+//     service: 'gmail',
+//     port: 578,
+//     auth: {
+//         user: TEST_MAIL,
+//         pass: process.env.TEST_MAIL_PASS
+//     }
+// })
 
 
 let user = {
@@ -227,6 +227,29 @@ if (cluster.isPrimary) {
     })
 }
 
+let connectedClients = []
+io.on('connection', socket => {
+    // console.log('Nuevo cliente conectado')
+    connectedClients.push(socket)
+    console.log(`Cliente conectado. Total de clientes conectados: ${connectedClients.length}`)
+
+    socket.on('message', data => {
+        console.log('message',data)
+        mensajes.push(data)
+        io.emit('messageLogs', mensajes)
+        // persisti 
+    })
+
+    socket.on('authenticated', data => {
+        
+        socket.broadcast.emit('newUserConnected', data)
+    })
+    
+    socket.on('disconnect',()=>{
+        connectedClients = connectedClients.filter((client) => client !== socket)
+        console.log(`Cliente desconectado. Total de clientes conectados: ${connectedClients.length}`)
+    })
+})
 module.exports = {
     httpServer
 }
