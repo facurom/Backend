@@ -19,5 +19,6 @@ router
     .post('/', createUser)
     .put('/:uid', updateUser)
     .delete('/:uid', deleteUser)
+    .post('/', () =>{})
 
 module.exports = router
