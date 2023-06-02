@@ -1,9 +1,10 @@
 const  configObject  = require("./config/config.js");
 const { httpServer } = require("./server.js");
+const express = require ('express')
 
 const swaggerJsDoc= require ('swagger-jsdoc');
 const swaggerUiExpress = require ('swagger-ui-express');
-
+const app = express();
 
 const swaggerOptions = {
     definition: {
@@ -17,7 +18,7 @@ const swaggerOptions = {
 }
 const specs = swaggerJsDoc(swaggerOptions)
 
-application.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 const PORT = configObject.PORT
 
