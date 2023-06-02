@@ -1,0 +1,136 @@
+paths:
+  /api/pets/:
+    get:
+      summary: Obtener todas las mascotas
+      tags:
+        - Mascotas
+      responses:
+        "200":
+          description: Lista de mascotas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mascota'
+    post:
+      summary: Crear una nueva mascota
+      tags:
+        - Mascotas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mascota'
+      responses:
+        "201":
+          description: Mascota creada exitosamente
+
+  # /api/users/:
+  #   post:
+  #     summary: Registrar un nuevo usuario
+  #     tags:
+  #       - Usuarios
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Usuario'
+  #     responses:
+  #       "201":
+  #         description: Usuario registrado exitosamente
+
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Proceso de adopción
+      tags:
+        - Adopción
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: uid es el id del usuario que adopta la mascota
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el ID de la mascota a adoptar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Adopción exitosa
+          # content:
+          #   application/json:
+          #     schema:
+          #       $ref: '#/components/schemas/Mascota'
+
+components:
+  schemas:
+    Mascota:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la mascota
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        adopted:
+          type: boolean
+          description: Por defecto la mascota no está adoptada
+        owner:
+          type: string
+          description: ID del propietario
+        birthDate:
+          type: string
+          description: Fecha de nacimiento de la mascota         
+      example:
+        id: 1
+        name: Firulais
+        specie: Perro
+        adopted: false
+        owner: false
+        birthDate: '2023-05-23T10:30:00.000Z'
+    # Usuario:
+    #   type: object
+    #   properties:
+    #     first_name:
+    #       type: string
+    #       description: Nombre del usuario
+    #     last_name:
+    #       type: string
+    #       description: Apellido del usuario
+    #     email:
+    #       type: string
+    #       description: Email del usuario
+    #     password:
+    #       type: string
+    #       description: Contraseña del usuario
+    #   example:
+    #     first_name: Juan
+    #     last_name: Perez
+    #     email: juan@example.com
+    #     password: password123
+
+  requestBodies:
+    Mascota:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Mascota'
+      
+
+    # Usuario:
+    #   required: true
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/Usuario'
