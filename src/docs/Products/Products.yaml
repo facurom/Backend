@@ -1,0 +1,114 @@
+paths:
+  /api/products/:
+      get:
+        sumary: Obtiene todos los productos
+        tags: 
+          - Users
+        responses:
+          "200":
+            description: Los productos fueron obtenidos correctamente.
+            content:
+              applications/json:
+                schema:
+                  type: array
+                  items: 
+                    $ref: '#/components/schema/Products'
+          "500":
+            description: error interno del server, usualmente generado ppr una query defectuosa o un fallo con la base de datos.
+      post:
+        sumary: Crea un nuevo usuario
+        tags: 
+          - Products
+        requestBody:
+          required: true
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/requestBodies/Products'
+        responses:
+          "201":
+            description: Los productos fueron obtenidos correctamente.
+              
+
+  # /api/users/{uid}:
+  #     get:
+  #       sumary: Obtiene un usuario en base un uid
+  #         tags: 
+  #           - Users
+  #         parameters:
+  #           - name: uid
+  #             in: path
+  #             required: true
+  #             description: El id del usuario que se desea solicitar
+  #             schema:
+  #               type: string
+  #         responses:
+  #           "200":
+  #             description: El usuario fue obtenido correctamente.
+  #             content:
+  #               applications/json:
+  #                 schema:
+  #                   $ref: '#/components/schema/User'
+  #     put:
+  #       sumary: Se actualiza un usuario en base un uid
+  #         tags: 
+  #           - Users
+  #         parameters:
+  #         - name: uid
+  #           in: path
+  #           required: true
+  #           description: El id del usuario que se desea actualizar
+  #           schema:
+  #             $type: string
+  #         requestBody:
+  #           required: true
+  #           content:
+  #             application/json:
+  #               schema: 
+  #                 $ref: '#/components/requestBodies/updateUser'    
+      
+components:
+  schemas:
+    Products:
+      type: object 
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por Mongo.
+        first_name:
+          type: string
+          description: Primera descripcion del producto.
+        second_description:
+          type: string
+          description: Segunda descripcion del producto.
+        price:
+          type: string
+          description: precio del producto.
+      expamle:
+        _id: ObjectId(" asddefe45y")
+        first_description: Crema hidratante Nivea
+        second_description: Dermocosmetica
+        price: $100
+
+requestBodies:
+  updateUser:
+    content:
+      application/json:
+        schema:
+          Products:
+          type: object
+          properties:
+              first_description:
+                type: string
+                description: Primera descripcion del producto.
+              second_description:
+                type: string
+                description: Segunda descripcion del producto.
+              price:
+                type: string
+                description: precio del producto.
+        expamle:
+          first_description: Crema hidratante Nivea
+          second_description: Dermocosmetica
+          price: $100
+          

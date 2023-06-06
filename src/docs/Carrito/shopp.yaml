@@ -1,31 +1,31 @@
 paths:
-  /api/pets/:
+  /api/shopp/:
     get:
-      summary: Obtener todas las mascotas
+      summary: Obtener todas las productos
       tags:
-        - Mascotas
+        - Carrito
       responses:
         "200":
-          description: Lista de mascotas
+          description: Lista de productos
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Mascota'
+                  $ref: '#/components/schemas/Carrito'
     post:
-      summary: Crear una nueva mascota
+      summary: Crear un nuevo producto
       tags:
-        - Mascotas
+        - Carrito
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Mascota'
+              $ref: '#/components/schemas/Carrito'
       responses:
         "201":
-          description: Mascota creada exitosamente
+          description: Producto cargado exitosamente
 
   # /api/users/:
   #   post:
@@ -44,25 +44,25 @@ paths:
 
   /api/adoptions/{uid}/{pid}:
     post:
-      summary: Proceso de adopción
+      summary: Proceso de agregado de producto
       tags:
-        - Adopción
+        - Carrito
       parameters:
         - name: uid
           in: path
           required: true
-          description: uid es el id del usuario que adopta la mascota
+          description: uid es el id del usuario que contiene el producto
           schema:
             type: string
         - name: pid
           in: path
           required: true
-          description: pid es el ID de la mascota a adoptar
+          description: pid es el ID del producto para cargar
           schema:
             type: string
       responses:
         "200":
-          description: Adopción exitosa
+          description: Su producto se agrego correctamente
           # content:
           #   application/json:
           #     schema:
@@ -70,34 +70,25 @@ paths:
 
 components:
   schemas:
-    Mascota:
+    Carrito:
       type: object
       properties:
         id:
           type: string
-          description: ID de la mascota
+          description: ID del producto
         name:
           type: string
-          description: Nombre de la mascota
-        specie:
+          description: Nombre del producto
+        category:
           type: string
-          description: Especie de la mascota
-        adopted:
-          type: boolean
-          description: Por defecto la mascota no está adoptada
-        owner:
-          type: string
-          description: ID del propietario
-        birthDate:
-          type: string
-          description: Fecha de nacimiento de la mascota         
+          description: Categoria del producto
+      
+              
       example:
         id: 1
-        name: Firulais
-        specie: Perro
-        adopted: false
-        owner: false
-        birthDate: '2023-05-23T10:30:00.000Z'
+        name: Crema hidratante Avon
+        category: Dermocosmetica
+        
     # Usuario:
     #   type: object
     #   properties:
@@ -120,12 +111,12 @@ components:
     #     password: password123
 
   requestBodies:
-    Mascota:
+    Carrito:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Mascota'
+            $ref: '#/components/schemas/Carrito'
       
 
     # Usuario:

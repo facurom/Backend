@@ -60,6 +60,25 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
+const swaggerJsDoc= require ('swagger-jsdoc');
+const swaggerUiExpress = require ('swagger-ui-express');
+const { UserModel } = require('./Dao/mongo/models/user.model')
+
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            tittle: 'Documentacion de nuestra app ',
+            description: 'Api pensada para ecommerce'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+const specs = swaggerJsDoc(swaggerOptions)
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 //toy____________________________________________________
 // app.use('/api/users', usersRouter)
 //app.use('/api/toys', toysRouter)
@@ -77,6 +96,7 @@ app.get('/api/user', async (req, res) => {
         console.log(error)
     }
 })
+
 app.post('/api/user', async (req, res) => {
     //mada el  cliente request 
     try {
@@ -188,44 +208,44 @@ app.use((err, req, res, next) => {
 initProductsSocket(io)
 
 //clase de clustering---------------------------------
-if (cluster.isPrimary) {
-    console.log('Proceso primario, generando un proceso trabajador')
-    for (let i = 0; i < numeroProcesadore; i++) {
-        cluster.fork()
-    }
-    cluster.on('message', worker => {
-        console.log(`Mensaje recibido de El worker ${worker.process.pid}`)
-    })
-} else {
-    console.log('Al ser un proceso forkeado, no cuento como primario, por lo tanto, isPrimary=false. Soy un worker')
-    console.log(`Soy un proceso worker con el id: ${process.pid}`)
+// if (cluster.isPrimary) {
+//     console.log('Proceso primario, generando un proceso trabajador')
+//     for (let i = 0; i < numeroProcesadore; i++) {
+//         cluster.fork()
+//     }
+//     cluster.on('message', worker => {
+//         console.log(`Mensaje recibido de El worker ${worker.process.pid}`)
+//     })
+// } else {
+//     console.log('Al ser un proceso forkeado, no cuento como primario, por lo tanto, isPrimary=false. Soy un worker')
+//     console.log(`Soy un proceso worker con el id: ${process.pid}`)
 
-    app.get('/', (req, res) => {
-        res.send('hello Docker app')
-    })
+//     app.get('/', (req, res) => {
+//         res.send('hello Docker app')
+//     })
 
-    app.get('/simple', (req, res) => {
-        let sum = 0
-        for (let i = 0; i < 1000000; i++) {
-            sum += i
-        }
-        res.send({
-            status: 'success',
-            message: `El worker ${process.pid} a atendido la petición: La suma es = ${sum}`
-        })
-    })
+//     app.get('/simple', (req, res) => {
+//         let sum = 0
+//         for (let i = 0; i < 1000000; i++) {
+//             sum += i
+//         }
+//         res.send({
+//             status: 'success',
+//             message: `El worker ${process.pid} a atendido la petición: La suma es = ${sum}`
+//         })
+//     })
 
-    app.get('/compleja', (req, res) => {
-        let sum = 0
-        for (let i = 0; i < 5e8; i++) {
-            sum += i
-        }
-        res.send({
-            status: 'success',
-            message: `El worker ${process.pid} a atendido la petición: La suma esLa suma es ${sum}`
-        })
-    })
-}
+//     app.get('/compleja', (req, res) => {
+//         let sum = 0
+//         for (let i = 0; i < 5e8; i++) {
+//             sum += i
+//         }
+//         res.send({
+//             status: 'success',
+//             message: `El worker ${process.pid} a atendido la petición: La suma esLa suma es ${sum}`
+//         })
+//     })
+// }
 
 let connectedClients = []
 io.on('connection', socket => {
