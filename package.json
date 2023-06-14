@@ -32,8 +32,8 @@
   },
   "scripts": {
     "start:dev": "nodemon src/app.js --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js --mode production"
+    "start": "node src/app.js --mode production",
+    "test": "mocha test/hands.test.js"
   },
   "name": "backend",
   "version": "1.0.0",
@@ -49,5 +49,10 @@
     "url": "https://github.com/facurom/Backend/issues"
   },
   "homepage": "https://github.com/facurom/Backend#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
+  }
 }
