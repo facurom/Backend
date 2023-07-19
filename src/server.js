@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
 const { uploader} = require('./utils/multerConfig')
 const logger = require('morgan')
+const paymentRouter = require('./routes/payments.router.js')
 // session_______________________________________________________________
 const session = require('express-session')
 const cors = require('cors')
@@ -55,8 +56,8 @@ const { cpus } = require('os')
 const numeroProcesadore = cpus().length
 
 //Payment________________________________________________________________-
-app.use('/api/payments', paymentRouter)
-const paymentRouter = require('./routes/payments.router')
+
+
 
 // handlebars_______________________________________________________________
 app.engine('handlebars', handlebars.engine())
@@ -206,7 +207,7 @@ app.use((err, req, res, next) => {
     console.log(err)
     res.status(500).send('Todo mal')
 })
-
+app.use('/api/payments', paymentRouter)
 // socket_______________________________________________________________
 initProductsSocket(io)
 
