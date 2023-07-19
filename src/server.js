@@ -54,6 +54,9 @@ const cluster = require('cluster')
 const { cpus } = require('os')
 const numeroProcesadore = cpus().length
 
+//Payment________________________________________________________________-
+app.use('/api/payments', paymentRouter)
+const paymentRouter = require('./routes/payments.router')
 
 // handlebars_______________________________________________________________
 app.engine('handlebars', handlebars.engine())
